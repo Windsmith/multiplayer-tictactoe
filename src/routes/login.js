@@ -8,7 +8,7 @@ export default function Login() {
         <div className="flex flex-col">
             <label>Enter your username</label>
             <input value={username} onChange={e => setUsername(e.target.value)} placeholder="username" />
-            <Link to={`/game`}>Enter</Link>
+            <Link to={username ? `/game` : null}>Enter</Link>
         </div>
 
     )
