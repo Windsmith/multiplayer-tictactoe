@@ -8,7 +8,7 @@ export default function Game() {
     useEffect(() => {
         const timer = setTimeout(() => {
             setMatchFound(true)
-        }, 5000)
+        }, 1000)
         return () => clearTimeout(timer)
     }, [])
 
