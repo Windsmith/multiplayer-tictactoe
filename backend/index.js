@@ -12,21 +12,38 @@ server.listen(3001, () => {
 
 let connectedUsers = 0;
 
+let lobby = {}
+
 io.on('connection', (socket) => {
     connectedUsers++;
-    console.log(connectedUsers);
-
-    if (connectedUsers == 2) io.emit('match-found-status', true)
 
     socket.on('disconnect', () => {
         connectedUsers--;
-        console.log(connectedUsers);
 
         if (connectedUsers == 1) io.emit('match-found-status', false)
     })
 
     socket.on('moveMade', (val) => {
         io.emit('board-update', val)
+    })
+
+    socket.on('turnEnd', (val) => {
+        lobby[val].emit('turn-start', true)
+    })
+
+    socket.on('set-winner', (val) => { io.emit('winner', val) })
+
+    socket.on('username', (val) => {
+        lobby[`${val}${connectedUsers}`] = socket
+        //TODO: Dunno where to put this exactly
+        if (connectedUsers == 2) {
+            io.emit('match-found-status', true)
+            lobby['player1'].emit('set-player', 'X')
+            lobby['player1'].emit('set-opponent', 'player2')
+            lobby['player2'].emit('set-player', 'O')
+            lobby['player2'].emit('set-opponent', 'player1')
+            lobby['player1'].emit('turn-start', true)
+        }
     })
 })
 

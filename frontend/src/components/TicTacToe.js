@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react"
 
-export default function TicTacToe({ socket }) {
+export default function TicTacToe({ socket, isTurn, winner, player, opponent, setIsTurn }) {
     const [board, setBoard] = useState([[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']])
-    const [player, setPlayer] = useState('X');
-    const [winner, setWinner] = useState('');
 
     const checkWin = () => {
         if (board[0][0] === board[1][0] && board[1][0] === board[2][0] && board[0][0] !== ' ') return true
@@ -20,23 +18,36 @@ export default function TicTacToe({ socket }) {
         return false;
     }
 
+    console.log(player, opponent, isTurn);
     useEffect(() => {
         socket.on('board-update', (val) => {
             setBoard(val)
         })
 
-        return () => socket.off('board-update')
+        return () => {
+            socket.off('board-update')
+        }
     })
 
     useEffect(() => {
-        if (checkWin()) setWinner(player)
-        console.log(board[0][0] === board[1][0])
+        if (checkWin()) socket.emit('set-winner', player)
     }, [board])
+
+    const turnEnd = () => {
+        socket.emit('turnEnd', opponent)
+        setIsTurn(false)
+    }
 
     return (
         <>
             <div>
                 Current Player: {player}
+            </div>
+            <div>
+                Opponent: {opponent}
+            </div>
+            <div>
+                Current Turn: {isTurn ? "You" : "Opponent"}
             </div>
 
             <div className="flex flex-col border-2 border-black w-min m-20">
@@ -48,11 +59,11 @@ export default function TicTacToe({ socket }) {
                                     className="p-10 border-2 border-black"
                                     onClick={() => {
                                         let temp = [...board];
-                                        if (temp[xindex][yindex] === ' ' && !winner) {
+                                        if (temp[xindex][yindex] === ' ' && !winner && isTurn) {
                                             temp[xindex][yindex] = player;
                                             setBoard(temp);
                                             socket.emit('moveMade', temp)
-                                            if (!checkWin()) player === 'X' ? setPlayer('O') : setPlayer('X')
+                                            turnEnd()
                                         }
                                     }}
                                 >
