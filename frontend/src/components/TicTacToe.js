@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-export default function TicTacToe() {
+export default function TicTacToe({ socket }) {
     const [board, setBoard] = useState([[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']])
     const [player, setPlayer] = useState('X');
     const [winner, setWinner] = useState('');
@@ -19,6 +19,14 @@ export default function TicTacToe() {
 
         return false;
     }
+
+    useEffect(() => {
+        socket.on('board-update', (val) => {
+            setBoard(val)
+        })
+
+        return () => socket.off('board-update')
+    })
 
     useEffect(() => {
         if (checkWin()) setWinner(player)
@@ -43,6 +51,7 @@ export default function TicTacToe() {
                                         if (temp[xindex][yindex] === ' ' && !winner) {
                                             temp[xindex][yindex] = player;
                                             setBoard(temp);
+                                            socket.emit('moveMade', temp)
                                             if (!checkWin()) player === 'X' ? setPlayer('O') : setPlayer('X')
                                         }
                                     }}
