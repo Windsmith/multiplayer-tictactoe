@@ -1,12 +1,21 @@
+require('dotenv').config()
+
 const express = require('express')
 const http = require('http')
 const { Server } = require('socket.io')
+const bodyParser = require("body-parser")
+const InitiateMongoServer = require("./config/db")
+
+
+InitiateMongoServer()
 
 const app = express();
 const server = http.createServer(app)
 const io = new Server(server)
 
-server.listen(3001, () => {
+const PORT = process.env.PORT || 3001;
+
+server.listen(PORT, () => {
     console.log('Listening on 3001');
 })
 
