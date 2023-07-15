@@ -4,8 +4,9 @@ const express = require('express')
 const http = require('http')
 const { Server } = require('socket.io')
 const bodyParser = require("body-parser")
-const InitiateMongoServer = require("./config/db")
 
+const user = require("./routes/user")
+const InitiateMongoServer = require("./config/db")
 
 InitiateMongoServer()
 
@@ -15,9 +16,19 @@ const io = new Server(server)
 
 const PORT = process.env.PORT || 3001;
 
+// Middleware
+app.use(bodyParser.json())
+
+// Router middleware
+app.use("/user", user);
+
 server.listen(PORT, () => {
     console.log('Listening on 3001');
 })
+
+app.get("/", (req, res) => {
+    res.json({ message: "API Working" });
+});
 
 let connectedUsers = 0;
 

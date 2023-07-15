@@ -1,0 +1,28 @@
+
+// Sign up
+POST http://localhost:3001/user/signup
+content-type: application/json
+
+{
+    "username": "John",
+    "email": "john@abc.com",
+    "password": "213bhett4956469"
+}
+
+###
+
+// Login
+POST http://localhost:3001/user/login
+content-type: application/json
+
+{
+    "email": "john@abc.com",
+    "password": "213bhett4956469"
+}
+
+###
+
+// Fetching user from token after signup/login
+GET http://localhost:3001/user/me
+content-type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjRiMjljNWY0MjhjYWNiM2NjYWI2MjM4In0sImlhdCI6MTY4OTQyODIyMiwiZXhwIjoxNjg5NDMxODIyfQ.fQm3EcnAEE2msOo6vpXBwvi5HiHiUXMMWrepQjJnP8A
