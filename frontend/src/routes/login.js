@@ -1,15 +1,25 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { VStack, Text, Box, FormControl, FormLabel, Input, FormHelperText, Button } from "@chakra-ui/react";
 
 export default function Login() {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     return (
-        <div className="flex flex-col">
-            <label>Enter your username</label>
-            <input value={username} onChange={e => setUsername(e.target.value)} placeholder="username" />
-            <Link to={username ? `/game` : null}>Enter</Link>
-        </div>
+        <VStack>
+            <FormControl>
+                <FormLabel>Email address</FormLabel>
+                <Input type='email' />
+                <FormHelperText>We'll never share your email.</FormHelperText>
+            </FormControl>
+            <FormControl>
+                <FormLabel>Password</FormLabel>
+                <Input type='password' />
+                <FormHelperText>Enter a strong password</FormHelperText>
+            </FormControl>
+            <Button colorScheme='blue'>Login</Button>
+        </VStack>
 
     )
 }
