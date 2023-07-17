@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { VStack, Text, Box, FormControl, FormLabel, Input, FormHelperText, Button } from "@chakra-ui/react";
 
 export default function Signup() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
 
     const signup = async () => {
         const response = await fetch('/user/signup', {
@@ -19,7 +21,10 @@ export default function Signup() {
                 password
             })
         })
+        //TODO: add error handling when signup doesn't return a token
+
         //TODO: add token saving to context and redirection
+        navigate('/game')
     }
 
     return (
