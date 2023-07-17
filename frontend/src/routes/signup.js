@@ -7,7 +7,7 @@ export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const signUp = async () => {
+    const signup = async () => {
         const response = await fetch('/user/signup', {
             method: "POST",
             headers: {
@@ -39,7 +39,7 @@ export default function Signup() {
                 <Input type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
                 <FormHelperText>Enter a strong password</FormHelperText>
             </FormControl>
-            <Button colorScheme='blue' onClick={signUp}>Signup</Button>
+            <Button colorScheme='blue' onClick={signup}>Signup</Button>
         </VStack>
     )
 }
