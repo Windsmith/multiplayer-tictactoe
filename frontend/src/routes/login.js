@@ -7,15 +7,15 @@ export default function Login() {
     const [password, setPassword] = useState('');
 
     return (
-        <VStack>
+        <VStack w={'xs'} mx="auto" spacing={"5"} justify={'center'} h={'2xl'}>
             <FormControl>
                 <FormLabel>Email address</FormLabel>
-                <Input type='email' />
+                <Input type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
                 <FormHelperText>We'll never share your email.</FormHelperText>
             </FormControl>
             <FormControl>
                 <FormLabel>Password</FormLabel>
-                <Input type='password' />
+                <Input type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
                 <FormHelperText>Enter a strong password</FormHelperText>
             </FormControl>
             <Button colorScheme='blue'>Login</Button>

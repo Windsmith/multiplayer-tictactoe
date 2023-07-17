@@ -3,10 +3,6 @@
         "browser": true,
         "es2021": true
     },
-    "eslint.workingDirectories": [
-        "./backend",
-        "./frontend"
-    ],
     "parser": "@babel/eslint-parser",
     "parserOptions": {
         "ecmaVersion": "latest",
