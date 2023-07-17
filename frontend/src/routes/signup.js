@@ -7,6 +7,21 @@ export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const signUp = async () => {
+        const response = await fetch('/user/signup', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username,
+                email,
+                password
+            })
+        })
+        //TODO: add token saving to context and redirection
+    }
+
     return (
         <VStack w={'xs'} mx="auto" spacing={"5"} justify={'center'} h={'2xl'}>
             <FormControl>
@@ -24,7 +39,7 @@ export default function Signup() {
                 <Input type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
                 <FormHelperText>Enter a strong password</FormHelperText>
             </FormControl>
-            <Button colorScheme='blue'>Signup</Button>
+            <Button colorScheme='blue' onClick={signUp}>Signup</Button>
         </VStack>
     )
 }
