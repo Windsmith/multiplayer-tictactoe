@@ -25,4 +25,4 @@ content-type: application/json
 // Fetching user from token after signup/login
 GET http://localhost:3001/user/me
 content-type: application/json
-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjRiMjljNWY0MjhjYWNiM2NjYWI2MjM4In0sImlhdCI6MTY4OTQyODIyMiwiZXhwIjoxNjg5NDMxODIyfQ.fQm3EcnAEE2msOo6vpXBwvi5HiHiUXMMWrepQjJnP8A
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjRiNTI4YjQ0NDkwZjQ3MTIxMjlmZDVlIn0sImlhdCI6MTY4OTU5NDM0NiwiZXhwIjoxNjg5NTk3OTQ2fQ._oykvtBYphIOEw0b81AdV4bjb70Hanu9WW3MyJKDKpU

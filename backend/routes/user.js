@@ -123,7 +123,7 @@ router.post(
 
             jwt.sign(
                 payload,
-                "secret",
+                "randomString",
                 {
                     expiresIn: 3600
                 },
@@ -146,6 +146,11 @@ router.post(
 router.get("/me", auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id)
+        res.status(200).json({
+            username: user.username,
+            email: user.email,
+            password: user.password
+        })
     } catch (e) {
         res.send({ message: "Error in fetching user" })
     }

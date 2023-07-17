@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { VStack, Text, Box, FormControl, FormLabel, Input, FormHelperText, Button } from "@chakra-ui/react";
+
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Signup() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const { token, setToken } = useContext(AuthContext)
 
     const navigate = useNavigate();
 
@@ -24,7 +28,8 @@ export default function Signup() {
         //TODO: add error handling when signup doesn't return a token
 
         //TODO: add token saving to context and redirection
-        navigate('/game')
+        setToken(await response.json().token)
+        navigate('/dashboard')
     }
 
     return (
