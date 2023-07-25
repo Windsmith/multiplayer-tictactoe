@@ -30,7 +30,6 @@ export default function Login() {
         })
         //TODO: add error handling when login doesn't return a token
 
-        //TODO: add token saving to context and redirection
         let jsonResp = await response.json();
         setToken(jsonResp.token)
         navigate('/dashboard')

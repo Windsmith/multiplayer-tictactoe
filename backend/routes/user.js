@@ -68,6 +68,7 @@ router.post(
             },
                 (err, token) => {
                     if (err) throw err;
+                    res.cookie('token', token)
                     res.status(200).json({
                         token
                     })
@@ -129,6 +130,7 @@ router.post(
                 },
                 (err, token) => {
                     if (err) throw err
+                    res.cookie('token', token)
                     res.status(200).json({
                         token
                     })
@@ -148,8 +150,6 @@ router.get("/me", auth, async (req, res) => {
         const user = await User.findById(req.user.id)
         res.status(200).json({
             username: user.username,
-            email: user.email,
-            password: user.password
         })
     } catch (e) {
         res.send({ message: "Error in fetching user" })

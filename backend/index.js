@@ -4,6 +4,7 @@ const express = require('express')
 const http = require('http')
 const { Server } = require('socket.io')
 const bodyParser = require("body-parser")
+const cookieParser = require('cookie-parser');
 
 const user = require("./routes/user")
 const InitiateMongoServer = require("./config/db")
@@ -18,6 +19,7 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(bodyParser.json())
+app.use(cookieParser())
 
 // Router middleware
 app.use("/user", user);

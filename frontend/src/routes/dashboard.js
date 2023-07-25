@@ -9,10 +9,7 @@ export default function Dashboard() {
     const [username, setUsername] = useState('')
 
     useEffect(() => {
-        console.log("here")
-        console.log(token)
-        console.log(token === "")
-        fetch('/user/me', { method: "GET", headers: { token: token } })
+        fetch('/user/me', { method: "GET" })
             .then((resp) => resp.json())
             .then((resp) => setUsername(resp.username))
     }, [])

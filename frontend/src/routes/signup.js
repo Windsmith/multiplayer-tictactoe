@@ -32,8 +32,8 @@ export default function Signup() {
         })
         //TODO: add error handling when signup doesn't return a token
 
-        //TODO: add token saving to context and redirection
-        setToken(await response.json().token)
+        let jsonResp = await response.json();
+        setToken(jsonResp.token)
         navigate('/dashboard')
     }
 
