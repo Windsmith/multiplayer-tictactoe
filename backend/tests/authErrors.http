@@ -1,0 +1,93 @@
+// Sign up
+
+//invalid username
+POST http://localhost:3001/user/signup
+content-type: application/json
+
+{
+    "username": "",
+    "email": "john@abc.com",
+    "password": "213bhett4956469"
+}
+
+###
+
+//invalid email
+POST http://localhost:3001/user/signup
+content-type: application/json
+
+{
+    "username": "fhdfg",
+    "email": "joh",
+    "password": "213bhett4956469"
+}
+
+###
+
+//invalid password
+POST http://localhost:3001/user/signup
+content-type: application/json
+
+{
+    "username": "kdfg",
+    "email": "john@abc.com",
+    "password": "213bh"
+}
+
+###
+
+//All invalid fields
+POST http://localhost:3001/user/signup
+content-type: application/json
+
+{
+    "username": "",
+    "email": "john",
+    "password": "21369"
+}
+
+###
+
+//already existing user
+POST http://localhost:3001/user/signup
+content-type: application/json
+
+{
+    "username": "sfddtsdf",
+    "email": "john@abc.com",
+    "password": "213bhett4956469"
+}
+
+###
+// Login
+
+//invalid email
+POST http://localhost:3001/user/login
+content-type: application/json
+
+{
+    "email": "john",
+    "password": "213bhett4956469"
+}
+
+###
+
+//user doesn't exist
+POST http://localhost:3001/user/login
+content-type: application/json
+
+{
+    "email": "johna@abc.com",
+    "password": "213bsdfds"
+}
+
+###
+
+//wrong password
+POST http://localhost:3001/user/login
+content-type: application/json
+
+{
+    "email": "john@abc.com",
+    "password": "213bsdfs"
+}

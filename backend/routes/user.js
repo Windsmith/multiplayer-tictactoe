@@ -40,7 +40,7 @@ router.post(
 
             if (user) {
                 return res.status(400).json({
-                    msg: "User Already Exists"
+                    message: "User Already Exists"
                 })
             }
 
@@ -85,9 +85,6 @@ router.post(
     "/login",
     [
         check("email", "Please enter a valid email").isEmail(),
-        check("password", "Please enter a valid password").isLength({
-            min: 6
-        })
     ],
     async (req, res) => {
         const errors = validationResult(req);

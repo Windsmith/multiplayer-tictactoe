@@ -1,12 +1,14 @@
 import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { VStack, Text, Box, FormControl, FormLabel, Input, FormHelperText, Button } from "@chakra-ui/react";
+import { VStack, Text, Box, FormControl, FormLabel, Input, FormHelperText, Button, FormErrorMessage } from "@chakra-ui/react";
 
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const [generalError, setGeneralError] = useState(null);
 
     const { token, setToken } = useContext(AuthContext)
 
@@ -28,15 +30,35 @@ export default function Login() {
                 password
             })
         })
-        //TODO: add error handling when login doesn't return a token
 
-        let jsonResp = await response.json();
-        setToken(jsonResp.token)
-        navigate('/dashboard')
+        let jsonResp = await response.json()
+        let respStatus = response.status
+
+
+
+        if (respStatus === 400) {
+            let message;
+            if (!(typeof jsonResp.errors === 'undefined') && jsonResp.errors.length > 0) {
+                //Only invalid email is possible
+                message = jsonResp.errors[0].msg
+            } else {
+                message = jsonResp.message
+            }
+            setGeneralError(<Text>{message}</Text>)
+        }
+        else if (respStatus === 500) {
+            const generalErrorMessage = <Text>The server has some issues. Please try again later.</Text>
+            setGeneralError(generalErrorMessage)
+        }
+        else if (respStatus === 200) {
+            setToken(jsonResp.token)
+            navigate('/dashboard')
+        }
     }
 
     return (
         <VStack w={'xs'} mx="auto" spacing={"5"} justify={'center'} h={'2xl'}>
+            {generalError}
             <FormControl>
                 <FormLabel>Email address</FormLabel>
                 <Input type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -49,6 +71,5 @@ export default function Login() {
             </FormControl>
             <Button colorScheme='blue' onClick={login}>Login</Button>
         </VStack>
-
     )
 }
