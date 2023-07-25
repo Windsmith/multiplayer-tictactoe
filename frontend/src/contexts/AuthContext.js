@@ -1,8 +1,8 @@
 import React, { createContext } from 'react'
 
+let cookie = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
-//TODO: This isn't persistent; look into cookies
 export const AuthContext = createContext({
-    token: "",
+    token: cookie || "",
     setToken: () => { }
 })
