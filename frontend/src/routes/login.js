@@ -33,7 +33,7 @@ export default function Login() {
         //TODO: add token saving to context and redirection
         let jsonResp = await response.json();
         setToken(jsonResp.token)
-        //navigate('/dashboard')
+        navigate('/dashboard')
     }
 
     return (

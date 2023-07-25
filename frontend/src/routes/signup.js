@@ -13,6 +13,11 @@ export default function Signup() {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (token === "") return
+        navigate('/dashboard')
+    }, [token])
+
     const signup = async () => {
         const response = await fetch('/user/signup', {
             method: "POST",
