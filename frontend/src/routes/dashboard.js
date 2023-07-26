@@ -19,7 +19,7 @@ export default function Dashboard() {
             {token === "" ?
                 <Navigate to={'/login'} />
                 :
-                <VStack direction="column">
+                <VStack>
                     <Text>
                         Welcome {username}, start game
                     </Text>

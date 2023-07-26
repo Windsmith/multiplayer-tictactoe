@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { VStack, Text, Button, HStack } from '@chakra-ui/react';
 
 export default function TicTacToe({ socket, isTurn, winner, player, opponent, setIsTurn }) {
     const [board, setBoard] = useState([[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']])
@@ -21,6 +22,7 @@ export default function TicTacToe({ socket, isTurn, winner, player, opponent, se
     console.log(player, opponent, isTurn);
     useEffect(() => {
         socket.on('board-update', (val) => {
+            console.log(val)
             setBoard(val)
         })
 
@@ -39,46 +41,46 @@ export default function TicTacToe({ socket, isTurn, winner, player, opponent, se
     }
 
     return (
-        <>
-            <div>
+        <VStack>
+            <Text>
                 Current Player: {player}
-            </div>
-            <div>
+            </Text>
+            <Text>
                 Opponent: {opponent}
-            </div>
-            <div>
+            </Text>
+            <Text>
                 Current Turn: {isTurn ? "You" : "Opponent"}
-            </div>
+            </Text>
 
-            <div className="flex flex-col border-2 border-black w-min m-20">
+            <VStack>
                 {board.map((row, xindex) => {
-                    return <div className="flex flex-row">
+                    return <HStack>
                         {row.map((elem, yindex) => {
+                            console.log(elem)
                             return (
-                                <div
-                                    className="p-10 border-2 border-black"
+                                <Button
                                     onClick={() => {
                                         let temp = [...board];
                                         if (temp[xindex][yindex] === ' ' && !winner && isTurn) {
                                             temp[xindex][yindex] = player;
                                             setBoard(temp);
-                                            socket.emit('moveMade', temp)
-                                            turnEnd()
+                                            //socket.emit('moveMade', temp)
+                                            //turnEnd()
                                         }
                                     }}
                                 >
                                     {elem}
-                                </div>
+                                </Button>
                             )
                         })}
-                    </div>
+                    </HStack>
                 })}
-            </div>
+            </VStack>
 
             {
-                winner ? <div>{winner}</div>
+                winner ? <Text>{winner}</Text>
                     : null
             }
-        </>
+        </VStack>
     )
 }
