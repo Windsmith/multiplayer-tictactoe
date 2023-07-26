@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react"
 import { VStack, Text, Button, HStack } from '@chakra-ui/react';
 
-export default function TicTacToe({ socket, isTurn, winner, player, opponent, setIsTurn }) {
-    const [board, setBoard] = useState([[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']])
-
+export default function TicTacToe({ socket, isTurn, winner, player, opponent, setIsTurn, roomId, board, setBoard }) {
     const checkWin = () => {
         if (board[0][0] === board[1][0] && board[1][0] === board[2][0] && board[0][0] !== ' ') return true
         if (board[0][1] === board[1][1] && board[1][1] === board[2][1] && board[0][1] !== ' ') return true
@@ -19,26 +17,9 @@ export default function TicTacToe({ socket, isTurn, winner, player, opponent, se
         return false;
     }
 
-    console.log(player, opponent, isTurn);
-    useEffect(() => {
-        socket.on('board-update', (val) => {
-            console.log(val)
-            setBoard(val)
-        })
-
-        return () => {
-            socket.off('board-update')
-        }
-    })
-
     useEffect(() => {
         if (checkWin()) socket.emit('set-winner', player)
     }, [board])
-
-    const turnEnd = () => {
-        socket.emit('turnEnd', opponent)
-        setIsTurn(false)
-    }
 
     return (
         <VStack>
@@ -54,18 +35,19 @@ export default function TicTacToe({ socket, isTurn, winner, player, opponent, se
 
             <VStack>
                 {board.map((row, xindex) => {
-                    return <HStack>
+                    return <HStack key={xindex}>
                         {row.map((elem, yindex) => {
-                            console.log(elem)
                             return (
                                 <Button
+                                    key={xindex + yindex}
                                     onClick={() => {
                                         let temp = [...board];
                                         if (temp[xindex][yindex] === ' ' && !winner && isTurn) {
                                             temp[xindex][yindex] = player;
+                                            console.log(temp)
                                             setBoard(temp);
-                                            //socket.emit('moveMade', temp)
-                                            //turnEnd()
+                                            socket.emit('moveMade', { boardState: [...temp], roomId })
+                                            setIsTurn(false)
                                         }
                                     }}
                                 >

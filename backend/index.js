@@ -44,10 +44,10 @@ io.on('connection', (socket) => {
         lobby = lobby.filter(user => user.socket.id != socket.id)
     })
 
-    socket.on('playerConnects', (token) => {
+    socket.on('playerConnects', ({ token, username }) => {
         const decoded = jwt.verify(token, "randomString")
         const id = decoded.user.id
-        lobby.push({ id, socket })
+        lobby.push({ id, username, socket })
 
         //If 2 players, connect them together in a game-room
         if (lobby.length % 2 == 0) {
@@ -59,33 +59,31 @@ io.on('connection', (socket) => {
             room.player2.socket.join(room.id)
             rooms.push(room)
 
-            //set both players match status as true
-            io.to(room.id).emit('matchFound', true)
+            let player1 = room.player1;
+            let player2 = room.player2;
+
+            //set both players required states to their appropriate values
+            io.to(room.id).emit('matchFound', { matchStatus: true, room: room.id })
+            player1.socket.emit('setPlayer', 'X')
+            player1.socket.emit('setOpponent', player2.username)
+            player2.socket.emit('setPlayer', 'O')
+            player2.socket.emit('setOpponent', player1.username)
+            player1.socket.emit('turnStart', true)
         }
     })
+
+    socket.on('moveMade', ({ boardState, roomId }) => {
+        socket.to(rooms.filter(room => room.id === roomId)[0].id).emit('boardUpdate', boardState)
+        socket.to(rooms.filter(room => room.id === roomId)[0].id).emit('turnStart', true)
+    })
     /*
-        socket.on('moveMade', (val) => {
-            io.emit('board-update', val)
-        })
+        
     
         socket.on('turnEnd', (val) => {
             lobby[val].emit('turn-start', true)
         })
     
         socket.on('set-winner', (val) => { io.emit('winner', val) })
-    
-        socket.on('username', (val) => {
-            lobby[`${val}${connectedUsers}`] = socket
-            //TODO: Dunno where to put this exactly
-            if (connectedUsers == 2) {
-                io.emit('match-found-status', true)
-                lobby['player1'].emit('set-player', 'X')
-                lobby['player1'].emit('set-opponent', 'player2')
-                lobby['player2'].emit('set-player', 'O')
-                lobby['player2'].emit('set-opponent', 'player1')
-                lobby['player1'].emit('turn-start', true)
-            }
-        })
         */
 })
 

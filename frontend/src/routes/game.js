@@ -12,11 +12,13 @@ export default function Game() {
     const { token, setToken } = useContext(AuthContext)
 
     const [matchFound, setMatchFound] = useState(false);
+    const [roomId, setRoomId] = useState();
 
     const socketRef = useRef();
 
     //const [isConnected, setIsConnected] = useState(false);
 
+    const [board, setBoard] = useState([[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']])
     const [player, setPlayer] = useState('');
     const [winner, setWinner] = useState('');
     const [isTurn, setIsTurn] = useState(false);
@@ -30,28 +32,34 @@ export default function Game() {
             socketRef.current = socket;
 
             //Send token to server where it can log user id and keep track of player.
-            socket.emit('playerConnects', token);
+            //TODO: Change player name to the username after fixing authcontext
+            socket.emit('playerConnects', { token, username: "PlayerName" });
         });
 
         socket.on('disconnect', () => {
-            setIsConnected(false);
+            //setIsConnected(false);
         });
 
-        socket.on('matchFound', (val) => {
-            setMatchFound(val);
+        socket.on('matchFound', ({ matchStatus, room }) => {
+            setMatchFound(matchStatus);
+            setRoomId(room)
         });
 
-        socket.on('set-player', (val) => {
+        socket.on('setPlayer', (val) => {
             setPlayer(val);
         });
 
-        socket.on('set-opponent', (val) => {
+        socket.on('setOpponent', (val) => {
             setOpponent(val);
         });
 
-        socket.on('turn-start', (val) => {
+        socket.on('turnStart', (val) => {
             setIsTurn(val);
         });
+
+        socket.on('boardUpdate', (val) => {
+            setBoard(val)
+        })
 
         socket.on('winner', (val) => setWinner(val));
 
@@ -59,9 +67,10 @@ export default function Game() {
             socket.off('connect');
             socket.off('disconnect');
             socket.off('matchFound');
-            socket.off('playerConnects');
-            socket.off('set-opponent');
-            socket.off('turn-start');
+            socket.off('setPlayer');
+            socket.off('setOpponent');
+            socket.off('turnStart');
+            socket.off('boardUpdate')
             socket.off('winner');
             socket.disconnect();
         };
@@ -71,7 +80,7 @@ export default function Game() {
         return (
             <>
                 <VStack>
-                    <TicTacToe socket={socketRef.current} isTurn={isTurn} winner={winner} player={player} opponent={opponent} setIsTurn={setIsTurn} />
+                    <TicTacToe socket={socketRef.current} isTurn={isTurn} winner={winner} player={player} opponent={opponent} setIsTurn={setIsTurn} roomId={roomId} board={board} setBoard={setBoard} />
                 </VStack>
             </>
         )
