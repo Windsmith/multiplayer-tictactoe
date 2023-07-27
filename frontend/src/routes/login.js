@@ -34,8 +34,6 @@ export default function Login() {
         let jsonResp = await response.json()
         let respStatus = response.status
 
-
-
         if (respStatus === 400) {
             let message;
             if (!(typeof jsonResp.errors === 'undefined') && jsonResp.errors.length > 0) {

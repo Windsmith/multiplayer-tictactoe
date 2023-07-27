@@ -4,5 +4,7 @@ let cookie = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.
 
 export const AuthContext = createContext({
     token: cookie || "",
-    setToken: () => { }
+    setToken: () => { },
+    username: "",
+    setUsername: () => { },
 })

@@ -43,7 +43,8 @@ const router = createBrowserRouter([
 
 export default function App() {
     const [token, setToken] = useState('')
-    const value = { token, setToken }
+    const [username, setUsername] = useState('')
+    const value = { token, setToken, username, setUsername }
 
     return (
         <ChakraProvider>

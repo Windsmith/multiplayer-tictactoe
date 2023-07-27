@@ -47,6 +47,7 @@ io.on('connection', (socket) => {
     socket.on('playerConnects', ({ token, username }) => {
         const decoded = jwt.verify(token, "randomString")
         const id = decoded.user.id
+
         lobby.push({ id, username, socket })
 
         //If 2 players, connect them together in a game-room
@@ -78,7 +79,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on('setWinner', ({ winner, roomId }) => {
-        console.log("here")
         //This event is triggered twice: by player and opponent. But we only want to emit the winner event once and filter the rooms once
         if (rooms.filter(room => room.id === roomId).length > 0) {
             io.to(rooms.filter(room => room.id === roomId)[0].id).emit('winner', winner)

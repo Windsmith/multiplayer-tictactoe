@@ -4,9 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 
 export default function Dashboard() {
-    const { token, setToken } = useContext(AuthContext)
-
-    const [username, setUsername] = useState('')
+    const { token, setToken, username, setUsername } = useContext(AuthContext)
 
     useEffect(() => {
         fetch('/user/me', { method: "GET" })

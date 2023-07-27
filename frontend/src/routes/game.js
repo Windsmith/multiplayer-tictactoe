@@ -9,14 +9,12 @@ import TicTacToe from '../components/TicTacToe';
 
 export default function Game() {
     //TODO: Update AuthContext to contain all user session data like username
-    const { token, setToken } = useContext(AuthContext)
+    const { token, setToken, username, setUsername } = useContext(AuthContext)
 
     const [matchFound, setMatchFound] = useState(false);
     const [roomId, setRoomId] = useState();
 
     const socketRef = useRef();
-
-    //const [isConnected, setIsConnected] = useState(false);
 
     const [board, setBoard] = useState([[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']])
     const [player, setPlayer] = useState('');
@@ -33,11 +31,11 @@ export default function Game() {
 
             //Send token to server where it can log user id and keep track of player.
             //TODO: Change player name to the username after fixing authcontext
-            socket.emit('playerConnects', { token, username: "PlayerName" });
+            socket.emit('playerConnects', { token, username });
         });
 
         socket.on('disconnect', () => {
-            //setIsConnected(false);
+
         });
 
         socket.on('matchFound', ({ matchStatus, room }) => {
@@ -78,11 +76,30 @@ export default function Game() {
 
     const Game = () => {
         return (
-            <>
+            <VStack>
+                <Text>
+                    You are: {player}
+                </Text>
+                <Text>
+                    Opponent: {opponent}
+                </Text>
+                <Text>
+                    Current Turn: {isTurn ? "You" : opponent}
+                </Text>
+
                 <VStack>
-                    <TicTacToe socket={socketRef.current} isTurn={isTurn} winner={winner} player={player} opponent={opponent} setIsTurn={setIsTurn} roomId={roomId} board={board} setBoard={setBoard} />
+                    <TicTacToe socket={socketRef.current} isTurn={isTurn} winner={winner} player={player} opponent={opponent} setIsTurn={setIsTurn} roomId={roomId} board={board} setBoard={setBoard} username={username} />
                 </VStack>
-            </>
+
+                {
+                    winner ?
+                        <>
+                            <Text>{winner}</Text>
+                            <Link to="/dashboard"><Button colorScheme="blue">Back</Button></Link>
+                        </>
+                        : null
+                }
+            </VStack>
         )
     }
 
