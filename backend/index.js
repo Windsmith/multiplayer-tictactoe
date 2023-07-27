@@ -73,17 +73,18 @@ io.on('connection', (socket) => {
     })
 
     socket.on('moveMade', ({ boardState, roomId }) => {
-        socket.to(rooms.filter(room => room.id === roomId)[0].id).emit('boardUpdate', boardState)
         socket.to(rooms.filter(room => room.id === roomId)[0].id).emit('turnStart', true)
+        socket.to(rooms.filter(room => room.id === roomId)[0].id).emit('boardUpdate', boardState)
     })
-    /*
-        
-    
-        socket.on('turnEnd', (val) => {
-            lobby[val].emit('turn-start', true)
-        })
-    
-        socket.on('set-winner', (val) => { io.emit('winner', val) })
-        */
+
+    socket.on('setWinner', ({ winner, roomId }) => {
+        console.log("here")
+        //This event is triggered twice: by player and opponent. But we only want to emit the winner event once and filter the rooms once
+        if (rooms.filter(room => room.id === roomId).length > 0) {
+            io.to(rooms.filter(room => room.id === roomId)[0].id).emit('winner', winner)
+            rooms = rooms.filter((room) => room.id != roomId)
+        }
+
+    })
 })
 
