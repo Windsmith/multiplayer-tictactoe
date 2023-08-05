@@ -1,0 +1,18 @@
+version: "2"
+services:
+  backend:
+    image: windsmith/ttt-backend
+    container_name: ttt-backend
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - ./backend:/usr/share/ttt/backend
+  frontend:
+    image: windsmith/ttt-frontend
+    container_name: ttt-frontend
+    ports:
+      - 8000:3000
+    volumes:
+      - ./frontend:/usr/share/ttt/client
+    depends_on:
+      - backend
