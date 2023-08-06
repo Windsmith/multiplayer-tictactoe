@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { VStack, Text, Box, FormControl, FormLabel, Input, FormHelperText, Button, FormErrorMessage } from "@chakra-ui/react";
 
 import { AuthContext } from "../contexts/AuthContext";
+import { getRandomName } from "../utils/NameGenerator";
 
 export default function Login() {
     const [email, setEmail] = useState('')
@@ -10,7 +11,7 @@ export default function Login() {
 
     const [generalError, setGeneralError] = useState(null);
 
-    const { token, setToken } = useContext(AuthContext)
+    const { token, setToken, username, setUsername } = useContext(AuthContext)
 
     const navigate = useNavigate();
 
@@ -54,6 +55,12 @@ export default function Login() {
         }
     }
 
+    const playAsGuest = () => {
+        let randomName = getRandomName()
+        setUsername(randomName)
+        navigate('/dashboard')
+    }
+
     return (
         <VStack w={'xs'} mx="auto" spacing={"5"} justify={'center'} h={'2xl'}>
             {generalError}
@@ -68,6 +75,8 @@ export default function Login() {
                 <FormHelperText>Enter a strong password</FormHelperText>
             </FormControl>
             <Button colorScheme='blue' onClick={login}>Login</Button>
+
+            <Button colorScheme='blue' onClick={playAsGuest}>Play as guest</Button>
         </VStack>
     )
 }

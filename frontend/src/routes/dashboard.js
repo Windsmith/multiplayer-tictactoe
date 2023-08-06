@@ -7,14 +7,16 @@ export default function Dashboard() {
     const { token, setToken, username, setUsername } = useContext(AuthContext)
 
     useEffect(() => {
-        fetch('/user/me', { method: "GET" })
-            .then((resp) => resp.json())
-            .then((resp) => setUsername(resp.username))
+        if (username == "") {
+            fetch('/user/me', { method: "GET" })
+                .then((resp) => resp.json())
+                .then((resp) => setUsername(resp.username))
+        }
     }, [])
 
     return (
         <>
-            {token === "" ?
+            {username === "" ?
                 <Navigate to={'/login'} />
                 :
                 <VStack>

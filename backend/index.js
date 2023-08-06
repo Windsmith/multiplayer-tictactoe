@@ -6,6 +6,7 @@ const { Server } = require('socket.io')
 const bodyParser = require("body-parser")
 const cookieParser = require('cookie-parser');
 const jwt = require("jsonwebtoken")
+const { randomUUID } = require('crypto')
 
 const user = require("./routes/user")
 const InitiateMongoServer = require("./config/db")
@@ -45,8 +46,15 @@ io.on('connection', (socket) => {
     })
 
     socket.on('playerConnects', ({ token, username }) => {
-        const decoded = jwt.verify(token, "randomString")
-        const id = decoded.user.id
+        let id;
+        try {
+            const decoded = jwt.verify(token, "randomString")
+            id = decoded.user.id
+        }
+        catch {
+            id = randomUUID()
+        }
+
 
         lobby.push({ id, username, socket })
 

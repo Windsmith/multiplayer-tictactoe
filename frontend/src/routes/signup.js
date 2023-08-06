@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { VStack, Text, Box, FormControl, FormLabel, Input, FormHelperText, Button, FormErrorMessage } from "@chakra-ui/react";
 
 import { AuthContext } from "../contexts/AuthContext";
+import { getRandomName } from "../utils/NameGenerator"
 
 export default function Signup() {
     const [username, setUsername] = useState('');
@@ -15,7 +16,9 @@ export default function Signup() {
 
     const [generalError, setGeneralError] = useState(null);
 
-    const { token, setToken } = useContext(AuthContext)
+    const authObj = useContext(AuthContext)
+    const token = authObj.token;
+    const setToken = authObj.setToken
 
     const navigate = useNavigate();
 
@@ -72,6 +75,12 @@ export default function Signup() {
         }
     }
 
+    const playAsGuest = () => {
+        let randomName = getRandomName()
+        authObj.setUsername(randomName)
+        navigate('/dashboard')
+    }
+
     return (
         <VStack w={'xs'} mx="auto" spacing={"5"} justify={'center'} h={'2xl'}>
             {generalError}
@@ -94,6 +103,8 @@ export default function Signup() {
                 <FormErrorMessage>Enter a valid password. Password should be longer than 6 characters</FormErrorMessage>
             </FormControl>
             <Button colorScheme='blue' onClick={signup}>Signup</Button>
+
+            <Button colorScheme='blue' onClick={playAsGuest}>Play as guest</Button>
         </VStack>
     )
 }
