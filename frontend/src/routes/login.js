@@ -16,9 +16,12 @@ export default function Login() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (token === "") return
+        console.log("here")
+        if (username === "") {
+            return
+        }
         navigate('/dashboard')
-    }, [token])
+    }, [])
 
     const login = async () => {
         const response = await fetch('/user/login', {

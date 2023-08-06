@@ -23,10 +23,12 @@ export default function Signup() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (token === "") return
+        console.log("here")
+        if (authObj.username === "") {
+            return
+        }
         navigate('/dashboard')
-    }, [token])
-
+    }, [])
 
     const resetErrors = () => {
         setUsernameError(false)
