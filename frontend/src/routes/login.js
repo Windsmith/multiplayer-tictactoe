@@ -16,7 +16,6 @@ export default function Login() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("here")
         if (username === "") {
             return
         }

@@ -23,7 +23,6 @@ export default function Signup() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("here")
         if (authObj.username === "") {
             return
         }

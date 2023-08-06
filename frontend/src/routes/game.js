@@ -97,7 +97,8 @@ export default function Game() {
                             <Text>{winner}</Text>
                             <Link to="/dashboard"><Button colorScheme="blue">Back</Button></Link>
                         </>
-                        : null
+                        : <Button colorScheme="blue" onClick={() => socketRef.current.emit('setWinner', { winner: opponent, roomId })}>Forfeit</Button>
+
                 }
             </VStack>
         )
