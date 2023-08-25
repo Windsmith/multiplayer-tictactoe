@@ -10,6 +10,7 @@ const { randomUUID } = require('crypto')
 
 const user = require("./routes/user")
 const InitiateMongoServer = require("./config/db")
+const User = require('./model/User')
 
 InitiateMongoServer()
 
@@ -89,7 +90,19 @@ io.on('connection', (socket) => {
     socket.on('setWinner', ({ winner, roomId }) => {
         //This event is triggered twice: by player and opponent. But we only want to emit the winner event once and filter the rooms once
         if (rooms.filter(room => room.id === roomId).length > 0) {
-            io.to(rooms.filter(room => room.id === roomId)[0].id).emit('winner', winner)
+            let room = rooms.filter(room => room.id === roomId)[0]
+            if (room.player1.username == winner) {
+                User.findById(room.player1.id).then((doc) => {
+                    doc.matchesWon += 1
+                    doc.save()
+                }).catch((err) => { console.log(err) })
+            } else {
+                User.findById(room.player2.id).then((doc) => {
+                    doc.matchesWon += 1
+                    doc.save()
+                }).catch((err) => { console.log(err) })
+            }
+            io.to(room.id).emit('winner', winner)
             rooms = rooms.filter((room) => room.id != roomId)
         }
 

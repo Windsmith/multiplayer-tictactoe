@@ -17,6 +17,10 @@ const UserSchema = mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now()
+    },
+    matchesWon: {
+        type: Number,
+        default: 0
     }
 })
 

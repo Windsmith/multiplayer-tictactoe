@@ -5,6 +5,8 @@ import { AuthContext } from '../contexts/AuthContext';
 
 export default function Dashboard() {
     const { token, setToken, username, setUsername } = useContext(AuthContext)
+    const [isGuest, setIsGuest] = useState(false)
+    const [score, setScore] = useState(0);
 
     useEffect(() => {
         if (username == "") {
@@ -12,6 +14,10 @@ export default function Dashboard() {
                 .then((resp) => resp.json())
                 .then((resp) => setUsername(resp.username))
         }
+
+        fetch('/user/matchScore', { method: "GET" })
+            .then((resp) => resp.json())
+            .then((resp) => setScore(resp.matchesWon))
     }, [])
 
     return (
@@ -23,6 +29,13 @@ export default function Dashboard() {
                     <Text>
                         Welcome {username}, start game
                     </Text>
+
+                    {token === "" ?
+                        <Link to="/game"><Button colorScheme="blue">Login to track your wins</Button></Link>
+                        : <Text>
+                            Matches won: {score}
+                        </Text>
+                    }
 
                     <Link to="/game"><Button colorScheme="blue">Start</Button></Link>
                 </VStack>

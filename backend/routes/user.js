@@ -153,4 +153,15 @@ router.get("/me", auth, async (req, res) => {
     }
 })
 
+router.get("/matchScore", auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+        res.status(200).json({
+            matchesWon: user.matchesWon,
+        })
+    } catch (e) {
+        res.send({ message: "Error in fetching user" })
+    }
+})
+
 module.exports = router
